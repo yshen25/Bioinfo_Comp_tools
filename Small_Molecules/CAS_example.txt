@@ -1,0 +1,123 @@
+1981	53164-05-9	acemetacin
+9866696	8015-61-0	alloin
+5877	53-36-1	Methylprednisolone Acetate
+5311066	638-94-8	Desonide
+5283748	55721-11-4	24,25-Dihydroxyvitamin D 3
+7848254		AC1OUF04
+240767	3801-06-7	FLUOROMETHOLONE ACETATE
+10571	514-21-6	Gitaloxigenin
+5362124	86541-75-5	benazepril
+5320231		
+124093	194804-75-6	garenoxacin
+161739	32214-80-5	lupenyl palmitate
+261265		NSC93241
+5316673	482-39-3	afzelin
+9980241	1255-35-2	fluprednidene acetate
+5281078	128794-94-5	Mycophenolic Acid
+6729	82-95-1	buclizine
+443928	1597-82-6	paramethasone acetate
+82153	3385-03-3	flunisolide
+5281881	53772-82-0	Flupenthixol
+277443	21688-61-9	16-hydroxylanosta-7,24-dien-3-one
+101614317	78330-50-4	Cyclonervilol
+286500		NSC144946
+124319	56121-42-7	N-benzoylphenylalanylphenylalinol acetate
+9846332	50629-82-8	halometasone
+65714	24527-27-3	8-(3-(2-chloro-10H-phenothiazin-10-yl)propyl)-1-thia-4,8-diazaspiro(4.5)decan-3-one
+5280459	522-12-3	quercitrin
+5282102	480-10-4	astragalin
+14524444	31187-54-9	CHEMBL495848
+119258	29838-67-3	astilbin
+11626560	877399-52-5	Crizotinib
+5362065	79350-37-1	Cefixime
+47206142	5250-39-5	
+23675322	27164-46-1	Cefazolin
+23687712	6184-17-4	Riboflavin 5'-phosphate sodium dihydrate
+46936936	49863-47-0	49863-47-0
+443943	3093-35-4	Halcinonide
+441386	147221-93-0	Delavirdine
+65064	989-51-5	epigallocatechin gallate
+222160		Scillirosidin
+5319121		
+24766	9007-28-7	Chondroitin Sulfates
+5318083	17680-84-1	6-methoxy-4',5-dihydroxyflavone-7-O-glucoside
+35330	30392-40-6	bitolterol
+54686764	64-73-3	Demeclocycline
+444025	82034-46-6	Loteprednol Etabonate
+9687	362-74-3	Bucladesine
+92825	639-14-5	gypsogenin
+65478	151-73-5	betamethasone sodium phosphate
+3191	90729-43-4	ebastine
+15150	90729-43-4	
+135398559	68538-85-2	Levoleucovorin
+12788355	57781-15-4	halopredone acetate
+135413523	171599-83-0	Sildenafil Citrate
+5315256		AC1NSSVA
+33887	27469-53-0	Almitrine
+71386	25122-57-0	clobetasone butyrate
+160143		SCHEMBL15053250
+6714002	73771-04-7	prednicarbate
+3062316	302962-49-8	Dasatinib
+44259948		Sexangularetin 3-rhamnoside-7-glucoside
+71414	33564-31-7	diflorasone
+443980	2002-29-1	flumethasone pivalate
+9935561	82451-20-5	negundoside
+99650	39011-91-1	oxypaeoniflora
+5472646		NSC720603
+65015	110078-46-1	plerixafor octahydrochloride
+46936552		5-fluoro-gulosyl fluoride
+3084460	26575-95-1	alisol B 23-acetate
+73432	14907-98-3	brusatol
+9871419	274693-27-5	Ticagrelor
+5282190	83805-11-2	26,26,26,27,27,27-hexafluoro-1,25-dihydroxyvitamin D3
+656575	62587-73-9	Cefsulodin
+21826	5611-51-8	triamcinolone hexacetonide
+5387860		NSC628603
+5317999		AC1NSW8C
+5280489	7235-40-7	beta Carotene
+4369188	432-70-2	alpha-carotene
+9854489	397864-44-7	fluticasone furoate
+43593	61270-78-8	Cefonicid
+158277	82870-43-7	Yuanhuafine
+10493	507-87-9	Sinosid [German]
+323895	62359-60-8	NSC-287067
+104865	147536-97-8	Bosentan
+441852	508-75-8	convallatoxin
+23709629	74578-69-1	Ceftriaxone
+91525	3087-16-9	green 5
+130881	144689-63-4	Olmesartan Medoxomil
+60823	134523-00-5	Atorvastatin
+32024		alpha-Antiarin
+5280899	144-68-3	Zeaxanthins
+5281243	127-40-2	Lutein
+115060	58812-37-6	toosendanin
+5282229	118244-44-3	prednisolone farnesylate
+8550	131-01-1	deserpidine
+54686904	220620-09-7	Tigecycline
+176873	188968-51-6	Cilengitide
+5360807	25999-31-9	Lasalocid
+5368397	7542-45-2	NSC635689
+5311398	156137-99-4	rapacuronium
+5281247	30743-41-0	neoxanthin
+5770	50-55-5	Reserpine
+65866	100427-26-7	lercanidipine
+52944008		CHEMBL1614660
+127527	76610-84-9	cefbuperazone
+10439877	593282-20-3	Dabigatran
+6440205	60195-70-2	Yuanhuacin
+3010818	402957-28-2	telaprevir
+54724548		
+21470	5373-42-2	thalicarpine
+392622	155213-67-5	Ritonavir
+5486699	7085-55-4	troxerutin
+439212		Glycoproteins
+444007		GTPL870
+148124	114977-28-5	Docetaxel
+439207	9037-22-3	Amylopectin
+11657939		tenacissoside L
+4921	57132-53-3	proglumetacin
+20057048		deaminodicarba-Gly-oxytocin
+44229136		
+44263864		MMF(3)
+72081	14636-12-5	Terlipressin
+16131173		woodfordin C
