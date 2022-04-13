@@ -105,7 +105,16 @@ if __name__ == "__main__":
     parser.add_argument("input_pdb", help="input pbd file that need dice")
     parser.add_argument("chain", help="chain names that need to be extracted")
     parser.add_argument("output_pdb", nargs="?", default=None, help="output pdb file name, default = <input file name>_<chain>.pdb")
+    parser.add_argument("-NP", "--no_pdb", action='store_true', help="no ouput PDB, export sequence only")
+    parser.add_argument("-NF", "--no_fasta", action='store_true', help="no output fasta, export PDB only")
     args = parser.parse_args()
-    output_file = extract(args.input_pdb, args.chain, args.output_pdb)
-    extract_sequence(output_file)
-    print(output_file)
+
+    if args.no_pdb: # only extract sequence from input pdb file
+        extract_sequence(args.input_pdb)
+
+    else:
+        output_file = extract(args.input_pdb, args.chain, args.output_pdb)
+        print(output_file)
+
+        if not args.no_fasta:
+            extract_sequence(output_file)
