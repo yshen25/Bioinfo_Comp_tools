@@ -5,7 +5,7 @@ import re
 import argparse
 from Bio.PDB.PDBIO import PDBIO
 from Bio.PDB.PDBParser import PDBParser
-from Bio.PDB.Polypeptide import three_to_one
+from Bio.PDB.Polypeptide import index_to_one, three_to_index
 from Bio.SeqRecord import SeqRecord
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -39,11 +39,14 @@ class select_chain(object):
             print("WARNING: Icode %s at position %s" % (icode, resseq))
         return 1
 
-    def accept_atom(self, atom):
-        name = atom.get_id() 
-        if _hydrogen.match(name): 
-            return 0 
-        else: 
+    def accept_atom(self, atom, omit_H=False):
+        if omit_H:
+            name = atom.get_id() 
+            if _hydrogen.match(name): 
+                return 0 
+            else: 
+                return 1
+        else:
             return 1
 
 def extract_sequence(in_pdb):
@@ -55,40 +58,56 @@ def extract_sequence(in_pdb):
         chain_id = f"{os.path.basename(in_pdb).split('.')[0]}_{chain.id}"
         chain_sequence = ""
         for residue in chain.get_residues():
-            chain_sequence += three_to_one(residue.get_resname())
+            chain_sequence += index_to_one(three_to_index(residue.get_resname()))
         record = SeqRecord(Seq(chain_sequence), id=chain_id, name=chain_id, description=chain_id)
         #print(record)
         seq_list.append(record)
     SeqIO.write(seq_list, in_pdb.split('.')[0]+".fasta", "fasta")
     return 0
 
-def renumber(struct):
+def renumber(struct, new_resnum:dict=None, flatten:bool=True):
     #loop 1: renumber residues to negative number to avoid errors
     chain_id = ""
     for residue in struct.get_residues():
         chain = residue.get_parent()
+        # detect a new chain
         if chain_id != chain.get_id():
             chain_id = chain.get_id()
             residue_id = -1
         #print(chain.get_id(), residue_id)
+        if not flatten:
+            # skip alternative position
+            if residue.id[2] != " ":
+                continue
+        
         residue.id=(' ',residue_id,' ')
         residue_id -= 1
-    #loop 2
-    chain_id = ""
-    for residue in struct.get_residues():
-        chain = residue.get_parent()
-        if chain_id != chain.get_id():
-            chain_id = chain.get_id()
-            residue_id = 1
-        #print(chain.get_id(), residue_id)
-        residue.id=(' ',residue_id,' ')
-        residue_id += 1
+    
+    if new_resnum is None:
+        #loop 2: start numbering from 1
+        chain_id = ""
+        for residue in struct.get_residues():
+            chain = residue.get_parent()
+            if chain_id != chain.get_id():
+                chain_id = chain.get_id()
+                residue_id = 1
+            #print(chain.get_id(), residue_id)
+            residue.id=(' ',residue_id,' ')
+            residue_id += 1
+
+    elif new_resnum:
+        for chain in struct.get_chains():
+            if chain.id in new_resnum.keys():
+                for resnum, residue in zip(new_resnum[chain.id], chain.get_residues()):
+            #print(chain.get_id(), residue_id)
+                    residue.id=(' ',resnum[0],resnum[1])
+
     return struct
 
 def extract(in_pdb, chain_ids, out_filename): 
     #Write out selected portion to filename. 
     if out_filename == None:
-        out_filename = f"{in_pdb.split('.')[0]}_{chain_ids}.pdb"
+        out_filename = in_pdb.replace(".pdb", f"_{chain_ids}.pdb")
     chain_list = list(chain_ids)
     parser = PDBParser(PERMISSIVE=1, QUIET=True)
     structure = parser.get_structure("input", in_pdb)
