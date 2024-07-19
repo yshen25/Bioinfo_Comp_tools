@@ -25,7 +25,7 @@ def A_extract(A_fasta, A_allele_file):
 
     for A_allele in A_list:
         A_rec = A_record[A_allele]
-        SeqIO.write(A_rec, rename(A_allele)+'.faa, 'fasta')
+        SeqIO.write(A_rec, rename(A_allele)+'.faa', 'fasta')
 
     return
 
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     parser.add_argument("A_fas")
     parser.add_argument("A_names")
     parser.add_argument("B_fas", default=None)
-    parser.add_argument("B_names", default.None)
+    parser.add_argument("B_names", default=None)
     args = parser.parse_args()
     if args.B_fas:
         AB_combine(args.A_fas, args.A_names, args.B_fas, args.B_names)
