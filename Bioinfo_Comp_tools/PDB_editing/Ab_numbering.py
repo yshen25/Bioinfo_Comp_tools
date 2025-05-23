@@ -51,7 +51,7 @@ class select_chain(object):
         #     return 1
 
 class renumber_mAb:
-    def __init__(self, scheme=None, CDR_indexes=None, flat=True, rename_chain=False):
+    def __init__(self, scheme=None, CDR_indexes=None, flat=False, rename_chain=False):
         if not scheme:
             self.scheme = "imgt"
         else:
@@ -83,33 +83,35 @@ class renumber_mAb:
             resnum_list.append(resi[0])
         return chain_id, resnum_list
 
-    def gen_replace_dict(self, struct) -> dict:
+    def gen_replace_dict(self, struct, chain_list=None) -> dict:
         
         # parser = PDBParser(PERMISSIVE=1)
         # struct = parser.get_structure("input", in_pdb)
         resnum_dict = {}
         for chain in struct.get_chains():
+            if (chain.id in chain_list) or (chain_list is None):
             # chain_id = f"{os.path.basename(in_pdb).split('.')[0]}_{chain.id}"
-            chain_sequence = ""
-            for residue in chain.get_residues():
-                chain_sequence += index_to_one(three_to_index(residue.get_resname()))
-            chain_id, resnum_list = self.anarci_parser(chain_sequence)
-            if not resnum_list:
-                continue
-            resnum_dict[chain.id] = (chain_id, resnum_list)
+                chain_sequence = ""
+                for residue in chain.get_residues():
+                    if residue._id[0] == ' ': # skip HETATM
+                        chain_sequence += index_to_one(three_to_index(residue.get_resname()))
+                chain_id, resnum_list = self.anarci_parser(chain_sequence)
+                if not resnum_list:
+                    continue
+                resnum_dict[chain.id] = (chain_id, resnum_list)
         # SeqIO.write(seq_list, in_pdb.split('.')[0]+".fasta", "fasta")
         return resnum_dict
 
-    def process(self, in_pdb, out_pdb=None):
+    def process(self, in_pdb, out_pdb=None, chain_list:list=None):
         #Write out selected portion to filename.
         if not out_pdb:
-            out_pdb = f"{in_pdb.split('.')[0]}_rn.pdb"
+            out_pdb = f"{in_pdb.split('.')[0]}_{self.scheme}.pdb"
         # chain_list = list(chain_ids)
         parser = PDBParser(PERMISSIVE=1, QUIET=True)
         structure = parser.get_structure("input", in_pdb)
         # sele = select_chain(chain_list)
         
-        new_resnum = self.gen_replace_dict(structure)
+        new_resnum = self.gen_replace_dict(structure, chain_list)
         structure = self._renumber(structure, new_resnum)
         
         io = PDBIO()
@@ -205,3 +207,21 @@ def block_by_seqid(pdb_in, pdb_out):
             else:
                 pass
             h_out.write(line)
+
+if __name__ == "__main__":
+    import argparse
+
+    argparser = argparse.ArgumentParser(description="renumber mAb pdb")
+    argparser.add_argument("in_pdb", help="input pdb")
+    argparser.add_argument("--out_pdb", required=False, default=None, help="output pdb")
+    argparser.add_argument("--scheme", required=False, default="imgt", help="imgt, chothia, kabat, martin")
+    argparser.add_argument("--flat", action="store_true", help="flat numbering", default=False)
+    argparser.add_argument("--rename_chain", action="store_true", help="rename chain to H and L", default=False)
+    args = argparser.parse_args()
+    # print(args)
+    in_pdb = args.in_pdb
+    out_pdb = args.out_pdb
+    scheme = args.scheme
+    flat = args.flat
+    
+    renumber_mAb(flat=flat, scheme=scheme).process(in_pdb, out_pdb)

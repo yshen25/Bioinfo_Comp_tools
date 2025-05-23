@@ -4,7 +4,7 @@
 from Bio import AlignIO
 from Bio.PDB.PDBParser import PDBParser
 from os.path import splitext
-from Bio.PDB.Polypeptide import one_to_three, three_to_one
+from Bio.PDB.Polypeptide import one_to_index, index_to_three
 
 def main(tempalte_pdb, chain_id, align_file, output_pdb=None):
     if output_pdb == None:
@@ -49,7 +49,7 @@ def main(tempalte_pdb, chain_id, align_file, output_pdb=None):
                         #if the location is difference in target and template, only keep the backbone atoms
                         print(i+1,alignment[:,i],"backbone")
                         for atom in sorted(chain[resi_id2])[0:4]:
-                            new_line = f"ATOM  {str(atom_id).rjust(5)} {atom.fullname}{atom.altloc}{one_to_three(alignment[:,i][1])} {chain.id}{str(resi_id).rjust(4)}{chain[resi_id2].id[2]}   {str(atom.coord[0]).rjust(8)}{str(atom.coord[1]).rjust(8)}{str(atom.coord[2]).rjust(8)}  {atom.occupancy:.2f} {str(atom.bfactor).rjust(5)}          {str(atom.element).rjust(2)} \n"
+                            new_line = f"ATOM  {str(atom_id).rjust(5)} {atom.fullname}{atom.altloc}{index_to_three(one_to_index(alignment[:,i][1]))} {chain.id}{str(resi_id).rjust(4)}{chain[resi_id2].id[2]}   {str(atom.coord[0]).rjust(8)}{str(atom.coord[1]).rjust(8)}{str(atom.coord[2]).rjust(8)}  {atom.occupancy:.2f} {str(atom.bfactor).rjust(5)}          {str(atom.element).rjust(2)} \n"
                             target_struct.write(new_line)
                             atom_id += 1
                         resi_id += 1
