@@ -2,7 +2,7 @@
 
 from Bio import PDB
 import os.path
-import anarci
+from abnumber import Chain
 from Bio.PDB.PDBIO import PDBIO
 from Bio.PDB.PDBParser import PDBParser
 from Bio.PDB.Polypeptide import index_to_one, three_to_index
@@ -51,7 +51,7 @@ class select_chain(object):
         #     return 1
 
 class renumber_mAb:
-    def __init__(self, scheme=None, CDR_indexes=None, flat=False, rename_chain=False):
+    def __init__(self, scheme=None, CDR_indexes=None, flat=False, rename_chain=False, use_anarcii=False):
         if not scheme:
             self.scheme = "imgt"
         else:
@@ -64,6 +64,7 @@ class renumber_mAb:
         
         self.flat = flat
         self.rename_chain = rename_chain
+        self.use_anarcii=use_anarcii
 
     def anarci_parser(self, sequence):
         # scheme choose from [imgt, chothia, kabat, martin]
@@ -81,25 +82,57 @@ class renumber_mAb:
             if resi[1] == "-":
                 continue
             resnum_list.append(resi[0])
+
+        # anarci will further distinguish kappa and lambda chain, change it back for simplicity
+
+        if chain_id == 'K':
+            chain_id = 'L'
+            
         return chain_id, resnum_list
+
+    # def gen_replace_dict(self, struct, chain_list=None) -> dict:
+        
+    #     # parser = PDBParser(PERMISSIVE=1)
+    #     # struct = parser.get_structure("input", in_pdb)
+    #     resnum_dict = {}
+    #     for chain in struct.get_chains():
+    #         if (chain_list is None) or (chain.id in chain_list):
+    #         # chain_id = f"{os.path.basename(in_pdb).split('.')[0]}_{chain.id}"
+    #             chain_sequence = ""
+    #             for residue in chain.get_residues():
+    #                 if residue._id[0] == ' ': # skip HETATM
+    #                     chain_sequence += index_to_one(three_to_index(residue.get_resname()))
+    #             chain_id, resnum_list = self.anarci_parser(chain_sequence)
+    #             if not resnum_list:
+    #                 continue
+    #             resnum_dict[chain.id] = (chain_id, resnum_list)
+    #     # SeqIO.write(seq_list, in_pdb.split('.')[0]+".fasta", "fasta")
+    #     return resnum_dict
 
     def gen_replace_dict(self, struct, chain_list=None) -> dict:
         
-        # parser = PDBParser(PERMISSIVE=1)
-        # struct = parser.get_structure("input", in_pdb)
         resnum_dict = {}
         for chain in struct.get_chains():
-            if (chain.id in chain_list) or (chain_list is None):
-            # chain_id = f"{os.path.basename(in_pdb).split('.')[0]}_{chain.id}"
-                chain_sequence = ""
-                for residue in chain.get_residues():
-                    if residue._id[0] == ' ': # skip HETATM
-                        chain_sequence += index_to_one(three_to_index(residue.get_resname()))
-                chain_id, resnum_list = self.anarci_parser(chain_sequence)
-                if not resnum_list:
-                    continue
-                resnum_dict[chain.id] = (chain_id, resnum_list)
-        # SeqIO.write(seq_list, in_pdb.split('.')[0]+".fasta", "fasta")
+            chain_sequence = ''
+            resnum_list = []
+            for residue in chain:
+                
+                # print(residue.resname)
+                if residue._id[0] == ' ': # skip HETATM
+                    chain_sequence += index_to_one(three_to_index(residue.resname))
+            try:
+                ab_chain = Chain(chain_sequence, scheme='imgt', use_anarcii=self.use_anarcii)
+                if ab_chain.chain_type == 'H':
+                    chain_type = 'H'
+                else:
+                    chain_type = 'L'
+                for pos, aa in ab_chain:
+                    # print(pos.format(chain_type=False), aa)
+                    resnum_list.append((pos.number, ' ' if not pos.letter else pos.letter))
+                # print(list(chain.positions.keys()))
+                resnum_dict[chain.id] = (chain_type, resnum_list)
+            except:
+                continue
         return resnum_dict
 
     def process(self, in_pdb, out_pdb=None, chain_list:list=None):
@@ -223,5 +256,6 @@ if __name__ == "__main__":
     out_pdb = args.out_pdb
     scheme = args.scheme
     flat = args.flat
+    rename = args.rename_chain
     
-    renumber_mAb(flat=flat, scheme=scheme).process(in_pdb, out_pdb)
+    renumber_mAb(flat=flat, scheme=scheme, rename_chain=rename).process(in_pdb, out_pdb)

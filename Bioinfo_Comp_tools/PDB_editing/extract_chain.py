@@ -9,6 +9,7 @@ from Bio.PDB.Polypeptide import index_to_one, three_to_index
 from Bio.SeqRecord import SeqRecord
 from Bio import SeqIO
 from Bio.Seq import Seq
+import os
 
 _hydrogen = re.compile("[123 ]*H.*")
 class select_chain(object):
@@ -50,7 +51,6 @@ class select_chain(object):
             return 1
 
 def extract_sequence(in_pdb):
-    import os.path
     parser = PDBParser(PERMISSIVE=1)
     struct = parser.get_structure("input", in_pdb)
     seq_list = []
